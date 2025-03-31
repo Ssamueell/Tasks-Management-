@@ -36,10 +36,10 @@ class Tasks:
 def task_add():
     tarefas_list = []
     while True:
-        tarefa_title = input("Title (or type 'quit' to stop):\n")
-        if tarefa_title.lower() == 'quit':
+        task_title = input("Title (or type 'quit' to stop):\n")
+        if task_title.lower() == 'quit':
             break
-        elif tarefa_title.isdigit():
+        elif task_title.isdigit():
             print('Enter a Valid Title')
             continue
         task_description = input("Description:\n")
@@ -53,7 +53,7 @@ def task_remove(task_list):
         print("No tasks to remove.")
         return task_list
     print("\nCurrent Tasks:")
-    for i, tarefa in enumerate(task_list):
+    for i, task in enumerate(task_list):
         print(f"{i + 1}. {task}")
     try:
         completed_task_index = int(input("\nEnter the number of the task to remove (or 0 to cancel): ")) - 1
@@ -105,7 +105,7 @@ def main():
             for task in task_list:
                 print(task)
         elif option == "2":
-            task_list = task_remove(tarefas_list)
+            task_list = task_remove(task_list)
         elif option == "3":
             tasks_data = [task.to_dict() for task in task_list]
             df = pd.DataFrame(tasks_data)
