@@ -1,6 +1,6 @@
 import pandas as pd
 
-class Tarefa:
+class Tasks:
     def __init__(self, title: str, description: str, status: bool):
         self.title = title
         self.description = description
@@ -33,7 +33,7 @@ class Tarefa:
             'Status': self.status
         }
 
-def tarefas_add():
+def task_add():
     tarefas_list = []
     while True:
         tarefa_title = input("Title (or type 'quit' to stop):\n")
@@ -42,28 +42,28 @@ def tarefas_add():
         elif tarefa_title.isdigit():
             print('Enter a Valid Title')
             continue
-        tarefa_description = input("Description:\n")
-        tarefa_status = False
-        tarefa = Tarefa(tarefa_title, tarefa_description, tarefa_status)
-        tarefas_list.append(tarefa)
+        task_description = input("Description:\n")
+        task_status = False
+        task = Tasks(task_title, task_description, task_status)
+        tarefas_list.append(task)
     return tarefas_list
 
-def tarefas_remove(tarefas_list):
-    if not tarefas_list:
+def task_remove(task_list):
+    if not task_list:
         print("No tasks to remove.")
-        return tarefas_list
+        return task_list
     print("\nCurrent Tasks:")
-    for i, tarefa in enumerate(tarefas_list):
-        print(f"{i + 1}. {tarefa}")
+    for i, tarefa in enumerate(task_list):
+        print(f"{i + 1}. {task}")
     try:
         completed_task_index = int(input("\nEnter the number of the task to remove (or 0 to cancel): ")) - 1
         if completed_task_index == -1:
             print("No task removed.")
-            return tarefas_list
-        if 0 <= completed_task_index < len(tarefas_list):
+            return task_list
+        if 0 <= completed_task_index < len(task_list):
             check = input('Are you sure you want to remove it? Type (yes) or (no): ')
             if check.lower() == 'yes':
-                removed_task = tarefas_list.pop(completed_task_index)
+                removed_task = task_list.pop(completed_task_index)
                 print(f"Task '{removed_task.title}' has been removed.")
             else:
                 print("Task not removed.")
@@ -72,26 +72,26 @@ def tarefas_remove(tarefas_list):
             print("Invalid task number.")
     except ValueError:
         print("Invalid input. Please enter a number.")
-    return tarefas_list
+    return task_list
 
-def change_status(tarefas_list):
-    if not tarefas_list:
+def change_status(task_list):
+    if not task_list:
         print("No tasks to mark.")
-        return tarefas_list
-    for i, tarefa in enumerate(tarefas_list):
-        print(f'{i + 1}. {tarefa}')
+        return task_list
+    for i, task in enumerate(task_list):
+        print(f'{i + 1}. {task}')
     try:
         task_index = int(input("\nEnter the number of the task to mark as completed (or 0 to cancel): ")) - 1
-        if 0 <= task_index < len(tarefas_list):
-            tarefas_list[task_index].change_s()
-            print(f"Task '{tarefas_list[task_index].title}' marked as completed.")
+        if 0 <= task_index < len(task_list):
+            task_list[task_index].change_s()
+            print(f"Task '{task_list[task_index].title}' marked as completed.")
         else:
             print('Mark a valid Task')
     except ValueError:
         print('Enter a valid number')
 
 def main():
-    tarefas_list = tarefas_add()
+    task_list = task_add()
     while True:
         print("\nOptions:")
         print("1. View tasks")
@@ -102,12 +102,12 @@ def main():
         option = input("Choose an option: ")
         if option == "1":
             print("\nCurrent Tasks:")
-            for tarefa in tarefas_list:
-                print(tarefa)
+            for task in task_list:
+                print(task)
         elif option == "2":
-            tarefas_list = tarefas_remove(tarefas_list)
+            task_list = task_remove(tarefas_list)
         elif option == "3":
-            tasks_data = [tarefa.to_dict() for tarefa in tarefas_list]
+            tasks_data = [task.to_dict() for task in task_list]
             df = pd.DataFrame(tasks_data)
             tasks_json = df.to_json(orient='records', lines=True)
             with open('tasks.json', 'w') as f:
@@ -115,9 +115,9 @@ def main():
             print("Tasks saved to 'tasks.json'. Exiting...")
             break
         elif option == '4':
-            tarefas_list += tarefas_add()
+            task_list += task_add()
         elif option == '5':        
-            change_status(tarefas_list)
+            change_status(task_list)
         else:
             print("Invalid option. Please try again.")
 
